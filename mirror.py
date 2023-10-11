@@ -10,7 +10,6 @@ from get_ip import get_ip_cross
 intinterface = str(input("Clone the traffic from: "))
 extinterface = str(input("Send the mirrored trafic trough: "))
 ip_dst = str(input("Destination IP: "))
-interval = int(input("Time interval between packets in seconds: "))
 ip_src = get_ip_cross(extinterface)
 
 # sniffer
