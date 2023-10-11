@@ -7,21 +7,16 @@ from scapy.sendrecv import sendp
 from get_ip import get_ip_cross
 
 # imputs
-dstinterface = str(input("Enter the interface to clone the packets: "))
-orginterface = str(input("Enter the interface to send the packets from: "))
-ip_dst = str(input("Enter the destination IP: "))
-interval = int(input("Enter the time interval between packets in seconds (0 for none): "))
-ip_src = get_ip_cross(orginterface)
+intinterface = str(input("Clone the traffic from: "))
+extinterface = str(input("Send the mirrored trafic trough: "))
+ip_dst = str(input("Destination IP: "))
+interval = int(input("Time interval between packets in seconds: "))
+ip_src = get_ip_cross(extinterface)
 
 # sniffer
-#pkts = open_live(orginterface, 65535, 1, 100)
-pkts = sniff(iface= orginterface)
+def capture_and_send(pkt):
+    pkt[IP].src = ip_src
+    pkt[IP].dst = ip_dst
+    sendp(pkt, iface=extinterface)
 
-# loop
-for pkt in pkts:
-    #del(pkt.chksum)
-    pkt = pkt[IP]
-    pkt.src= ip_src
-    pkt.dst= ip_dst
-    #print(pkt.show())
-    sendp(pkt, iface=dstinterface, inter=interval)
+sniff(iface=intinterface, prn=capture_and_send)
