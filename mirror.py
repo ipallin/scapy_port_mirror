@@ -14,10 +14,11 @@ ip_src = get_ip_cross(extinterface)
 
 # sniffer
 def capture_and_send(pkt):
+    pkt = pkt[IP]
+    del(pkt.chksum)
     del(pkt[TCP].chksum)
-    del(pkt[IP].chksum)
-    pkt[IP].src = ip_src
-    pkt[IP].dst = ip_dst
+    pkt.src = ip_src
+    pkt.dst = ip_dst
     print(pkt.show())
     send(pkt, iface=extinterface)
 
