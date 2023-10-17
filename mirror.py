@@ -15,10 +15,10 @@ ip_src = get_ip_cross(extinterface)
 # sniffer
 def capture_and_send(pkt):
     del(pkt[TCP].chksum)
-    del(pkt.chksum)
+    del(pkt[IP].chksum)
     pkt[IP].src = ip_src
     pkt[IP].dst = ip_dst
     print(pkt.show())
-    sendp(pkt, iface=extinterface)
+    send(pkt, iface=extinterface)
 
 sniff(iface=intinterface, prn=capture_and_send)
